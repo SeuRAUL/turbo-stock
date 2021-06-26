@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 2021_06_26_190342) do
 
   create_table "movements", force: :cascade do |t|
-    t.string "type", limit: 1
+    t.string "movement_type", limit: 1
     t.date "date"
     t.integer "quantity"
     t.integer "storage_id", null: false
