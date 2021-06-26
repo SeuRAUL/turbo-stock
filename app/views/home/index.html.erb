@@ -1,2 +1,10 @@
 <h1>Home#index</h1>
 <p>Find me in app/views/home/index.html.erb</p>
+
+<%= form_tag home_import_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Carregar CSV" %>
+<% end %>
+
+<br>
+
