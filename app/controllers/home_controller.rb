@@ -6,7 +6,7 @@ class HomeController < ApplicationController
   def import
     @count = 0
     @errors = []
-    byebug
+    
     CSV.foreach(params[:file]) do |row|
       storage_name, date, movement_type, product_name, quantity = row
       
@@ -40,7 +40,10 @@ class HomeController < ApplicationController
         
     end
 
-    
+    @products = []
+    Product.all.each do |p|
+      @products << {name: p.name, quant: check_stock(p.id) }
+    end
 
     render inline: """
       <h1> <%= \"#{@count} movimentações importadas.\" unless @count.nil? %> </h1>
@@ -51,11 +54,18 @@ class HomeController < ApplicationController
           <li><%= error[:row].to_s + \", \t \" + error[:message] %></li>
         <% end %>
       </ul>
+
+      <br>
+
+      <h2> Produtos </h2>
+      <ul>
+        <% @products.each do |p| %>
+          <li><%= p[:name] + \": \" + p[:quant].to_s %></li>
+        <% end %>
+      </ul>
       """
 
-      # <%= \"#{error[:row]},  #{error[:message]}\" %>
-    # redirect_to root_path(count: @count), notice: "Movimentações carregadas"
-
+      
   end
 
   def check_stock (product_id)
